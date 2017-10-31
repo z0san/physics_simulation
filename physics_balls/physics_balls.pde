@@ -1,4 +1,4 @@
-Ball[] main = new Ball[4];
+Ball[] main = new Ball[2];
 
 void setup(){
   //size(1500, 900);
@@ -33,5 +33,23 @@ void draw(){
 
 void exchange(Ball i, Ball j){
   float angle1 = atan((-i.pos.y + j.pos.y)/(i.pos.x - j.pos.x));
-  println(angle1 * (360/(2*PI)));
+
+  PVector portion = new PVector ();
+  portion.x = cos(angle1);
+  portion.y = sin(angle1);
+  println(portion.x, portion.y);
+  
+  PVector change1 = new PVector(j.velocity.x * j.mass * -1 * portion.x, j.velocity.y * j.mass * -1 * portion.y);
+  change1.x = change1.x/i.mass;
+  change1.y = change1.y/i.mass;
+  
+  PVector change2 = new PVector(i.velocity.x * i.mass * portion.x, i.velocity.y * i.mass * portion.y);
+  change2.x = change2.x/j.mass;
+  change2.y = change2.x/j.mass;
+  
+  i.velocity.x += change1.x;
+  i.velocity.y += change1.y;
+  
+  j.velocity.x += change2.x;
+  j.velocity.y += change2.y;
 }
