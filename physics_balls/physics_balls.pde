@@ -7,7 +7,7 @@ void setup(){
   noStroke();
   for(int i = 0; i < main.length; i ++){
     float diam = random(150) + 50;
-    main[i] = new Ball(random(width-diam)+diam/2, random(height-diam)+diam/2, random(60)-30, random(60)-30, diam, color(random(255), random(255), random(255)), diam);
+    main[i] = new Ball(random(width-diam)+diam/2, random(height-diam)+diam/2, random(60)-30, random(60)-30, 1, color(random(255), random(255), random(255)), diam);
   }
 }
 
@@ -36,20 +36,23 @@ void exchange(Ball i, Ball j){
 
   PVector portion = new PVector ();
   portion.x = cos(angle1);
-  portion.y = sin(angle1);
-  println(portion.x, portion.y);
+  portion.y = -sin(angle1);
+  //println(portion.x, portion.y);
   
-  PVector change1 = new PVector(j.velocity.x * j.mass * -1 * portion.x, j.velocity.y * j.mass * -1 * portion.y);
-  change1.x = change1.x/i.mass;
-  change1.y = change1.y/i.mass;
+  PVector change1 = new PVector(j.momentum.x * portion.x * -1, j.momentum.y * portion.y * -1);
   
-  PVector change2 = new PVector(i.velocity.x * i.mass * portion.x, i.velocity.y * i.mass * portion.y);
-  change2.x = change2.x/j.mass;
-  change2.y = change2.x/j.mass;
+  PVector change2 = new PVector(i.momentum.x * portion.x , i.momentum.y * portion.y );
   
-  i.velocity.x += change1.x;
-  i.velocity.y += change1.y;
+  i.momentum.x += change1.x;
+  i.momentum.y += change1.y;
   
-  j.velocity.x += change2.x;
-  j.velocity.y += change2.y;
+  i.momentum.x -= change2.x;  
+  i.momentum.y -= change2.y;
+  
+  j.momentum.x += change2.x;
+  j.momentum.y += change2.y;
+  
+  j.momentum.x -= change1.x;
+  j.momentum.y -= change1.y;
+  
 }
